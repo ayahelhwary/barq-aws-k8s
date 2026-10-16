@@ -2,7 +2,7 @@
 *.tfstate
 *.tfstate.*
 .terraform/
-terraform.tfvars
+terraform/terraform.tfvars
 *.auto.tfvars
 crash.log
 
@@ -15,7 +15,7 @@ secret.yaml
 .env
 
 # Ansible
-inventory.ini
+ansible/inventory/aws.ini
 *.retry
 
 # macOS
