@@ -27,3 +27,13 @@ variable "private_subnet_cidrs" {
   type        = list(string)
   default     = ["10.0.10.0/24", "10.0.11.0/24"]
 }
+
+variable "allowed_cidrs" {
+  description = "Your public IP(s) in CIDR form, allowed to SSH and to reach the app"
+  type        = list(string)
+
+  validation {
+    condition     = length(var.allowed_cidrs) > 0 && alltrue([for c in var.allowed_cidrs : can(cidrnetmask(c)) && c != "0.0.0.0/0"])
+    error_message = "Provide at least one valid IPv4 CIDR (for example 1.2.3.4/32). 0.0.0.0/0 is not allowed."
+  }
+}

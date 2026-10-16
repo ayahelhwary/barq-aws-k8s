@@ -1,0 +1,2 @@
+# Copy this file to terraform.tfvars and put your own public IP. Never commit terraform.tfvars.
+allowed_cidrs = ["203.0.113.10/32"]
