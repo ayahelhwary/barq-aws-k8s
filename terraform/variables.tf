@@ -37,3 +37,9 @@ variable "allowed_cidrs" {
     error_message = "Provide at least one valid IPv4 CIDR (for example 1.2.3.4/32). 0.0.0.0/0 is not allowed."
   }
 }
+
+variable "ssh_public_key_path" {
+  description = "Path to the public SSH key uploaded to AWS (the private key never leaves your machine)"
+  type        = string
+  default     = "~/.ssh/barq-lab.pub"
+}
