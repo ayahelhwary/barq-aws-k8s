@@ -55,3 +55,32 @@ variable "root_volume_gb" {
   type        = number
   default     = 20
 }
+
+variable "db_instance_class" {
+  description = "RDS instance class"
+  type        = string
+  default     = "db.t4g.micro"
+}
+
+variable "db_name" {
+  description = "Name of the PostgreSQL database"
+  type        = string
+  default     = "barq"
+}
+
+variable "db_username" {
+  description = "Master username for RDS"
+  type        = string
+  default     = "barq_admin"
+}
+
+variable "db_password" {
+  description = "Master password for RDS (set in terraform.tfvars, never commit)"
+  type        = string
+  sensitive   = true
+
+  validation {
+    condition     = length(var.db_password) >= 12 && !can(regex("[/@\"' ]", var.db_password))
+    error_message = "Password must be at least 12 characters and must not contain / @ \" ' or spaces."
+  }
+}
