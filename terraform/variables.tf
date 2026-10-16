@@ -43,3 +43,15 @@ variable "ssh_public_key_path" {
   type        = string
   default     = "~/.ssh/barq-lab.pub"
 }
+
+variable "instance_type" {
+  description = "EC2 instance type (arm64 Graviton to match images built on Apple Silicon)"
+  type        = string
+  default     = "t4g.small"
+}
+
+variable "root_volume_gb" {
+  description = "Root disk size in GB for each node"
+  type        = number
+  default     = 20
+}
