@@ -1,4 +1,10 @@
+data "http" "my_ip" {
+  url = "https://checkip.amazonaws.com"
+}
+
 locals {
+  my_cidr       = "${chomp(data.http.my_ip.response_body)}/32"
+  allowed_cidrs = length(var.allowed_cidrs) > 0 ? var.allowed_cidrs : [local.my_cidr]
   node_rules = {
     k8s-api       = { protocol = "tcp", from = 6443, to = 6443, desc = "Kubernetes API server" }
     kubelet       = { protocol = "tcp", from = 10250, to = 10250, desc = "Kubelet API" }
@@ -18,7 +24,7 @@ resource "aws_security_group" "nodes" {
 }
 
 resource "aws_vpc_security_group_ingress_rule" "ssh" {
-  for_each          = toset(var.allowed_cidrs)
+  for_each          = toset(local.allowed_cidrs)
   security_group_id = aws_security_group.nodes.id
   description       = "SSH from approved IP"
   cidr_ipv4         = each.value
@@ -28,7 +34,7 @@ resource "aws_vpc_security_group_ingress_rule" "ssh" {
 }
 
 resource "aws_vpc_security_group_ingress_rule" "app" {
-  for_each          = toset(var.allowed_cidrs)
+  for_each          = toset(local.allowed_cidrs)
   security_group_id = aws_security_group.nodes.id
   description       = "NGINX NodePort from approved IP"
   cidr_ipv4         = each.value
