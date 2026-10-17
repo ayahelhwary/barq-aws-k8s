@@ -37,3 +37,8 @@ output "db_username" {
   description = "Database master username"
   value       = aws_db_instance.main.username
 }
+
+output "redis_endpoint" {
+  description = "ElastiCache primary endpoint (host only, no credentials)"
+  value       = aws_elasticache_replication_group.redis.primary_endpoint_address
+}

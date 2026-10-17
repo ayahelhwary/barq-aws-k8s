@@ -85,3 +85,20 @@ variable "db_password" {
     error_message = "Password must be at least 12 characters and must not contain / @ \" ' or spaces."
   }
 }
+
+variable "redis_auth_token" {
+  description = "ElastiCache AUTH token (set in terraform.tfvars, never commit)"
+  type        = string
+  sensitive   = true
+
+  validation {
+    condition     = length(var.redis_auth_token) >= 16 && length(var.redis_auth_token) <= 128 && !can(regex("[/@\"' ]", var.redis_auth_token))
+    error_message = "Token must be 16-128 characters and must not contain / @ \" ' or spaces."
+  }
+}
+
+variable "cache_node_type" {
+  description = "ElastiCache node type"
+  type        = string
+  default     = "cache.t4g.micro"
+}

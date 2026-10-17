@@ -40,4 +40,8 @@ resource "aws_instance" "node" {
     Name = "${var.project_name}-${each.key}"
     Role = each.key
   }
+
+  lifecycle {
+    ignore_changes = [ami]
+  }
 }

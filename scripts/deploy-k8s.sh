@@ -9,6 +9,9 @@ USER_DB="$(terraform output -raw db_username 2>/dev/null || echo barq_admin)"
 DB_NAME="$(terraform output -raw db_name 2>/dev/null || echo barq)"
 PASS="$(awk -F'"' '/^db_password/ {print $2}' terraform.tfvars)"
 
+REDIS_HOST="$(terraform output -raw redis_endpoint 2>/dev/null || true)"
+REDIS_TOKEN="$(awk -F'"' '/^redis_auth_token/ {print $2}' terraform.tfvars)"
+
 scp -r -i "$KEY" ../k8s ubuntu@"$IP":~/
 
 ssh -i "$KEY" ubuntu@"$IP" bash -s <<EOF
